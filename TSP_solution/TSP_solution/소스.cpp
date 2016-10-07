@@ -16,7 +16,7 @@
 //	static int resultS[1000] = { 0, };
 //	int graphSize = 0;
 //	//   ifstream input("inputdata.txt");
-//	ifstream input("input.txt");
+//	ifstream input("input_500.txt");
 //	//-----------------입력받기---------------------
 //	while (input.eof() == false)
 //	{
