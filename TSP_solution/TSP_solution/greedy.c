@@ -26,7 +26,7 @@ int main(int argc, const char * argv[]) {
 	// read file
 	int k = 0;
 	for (i = 0; i<nOfCity; i++) {
-		distances[i] = (unsigned short *)malloc(sizeof(unsigned short)*nOfCity);
+		
 		for (j = 0; j<k+1; j++) {
 			
 				fscanf(in, "%hd", &num);
