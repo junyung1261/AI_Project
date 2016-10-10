@@ -1,17 +1,22 @@
 #include <stdio.h>
+#include <time.h>
 
 // Greedy Search Algorithm
-void getGreedyPath(int, unsigned short **, int*, int*);
+void getGreedyPath(int, unsigned short **, int*, int*, int);
+void two_Opt_Path(int , unsigned short **, int*, int*, int);
 
 // Main Function
 int main(int argc, const char * argv[]) {
 	// init 
 	int i, j=0;
 	int score = 0;
+	int best_score = 0;
 	int nOfCity = 100;
 	int * path = (int *)malloc(sizeof(int)*nOfCity);
+	int * best_path = (int *)malloc(sizeof(int)*nOfCity);
 	unsigned short ** distances = (unsigned short **)malloc(sizeof(unsigned short*)*nOfCity);
 	unsigned short num;
+
 
 	// open file
 	FILE *in = fopen("input.txt", "rb");
@@ -26,45 +31,55 @@ int main(int argc, const char * argv[]) {
 	// read file
 	int k = 0;
 	for (i = 0; i<nOfCity; i++) {
-		
 		for (j = 0; j<k+1; j++) {
 			
 				fscanf(in, "%hd", &num);
 				distances[i][j] = num;
-				distances[k][i] = num;
-			
+				distances[j][i] = num;
 		}
 		k++;
 	}
 	
-
-	printf("%hd, %hd--\n", distances[0][1], distances[77][60]);
-	
 	// close file
 	fclose(in);
+	
+	
 
 	// get Path
-	getGreedyPath(nOfCity, distances, path, &score);
+	getGreedyPath(nOfCity, distances, path, &score, 0);
+	best_score = score;
+	for (i = 1; i < nOfCity; i++) {
+		getGreedyPath(nOfCity, distances, path, &score, i);
+		if (score < best_score) {
+			
+			best_score = score;
+			memcpy(best_path, path, sizeof(int)*nOfCity);
+		}
+	}
+		
 
-	// print result & write file
-	fprintf(out, "%d\n", score);
+
+	two_Opt_Path(nOfCity, distances, best_path, &score,0);
+
+		// print result & write file
+	fprintf(out, "%d\n", best_score);
 	for (i = 0; i<nOfCity; i++) {
-		printf("%d\n", path[i]);
-		fprintf(out, "%d\n", path[i]);
+		printf("%d\n", best_path[i]);
+		fprintf(out, "%d\n", best_path[i]);
 	}
 	printf("score = %d\n\n", score);
 	return 0;
 }
 
 // Greedy Search Algorithm
-void getGreedyPath(int nOfCity, unsigned short ** distance, int * path, int * score) {
+void getGreedyPath(int nOfCity, unsigned short ** distance, int * path, int * score, int startpoint) {
 	// init
 	int i, j, start, next, min;
 	short length;
 	int * isRemain = (int *)malloc(sizeof(int)*nOfCity);
 	for (i = 0; i<nOfCity; i++) isRemain[i] = 1;
 	// start
-	start = 0;
+	start = startpoint;
 	isRemain[start] = 0;
 	path[0] = start;
 	*score = 0;
@@ -89,3 +104,29 @@ void getGreedyPath(int nOfCity, unsigned short ** distance, int * path, int * sc
 		start = next;
 	}
 }
+
+void two_Opt_Path(int nOfCity, unsigned short ** distance, int * path, int * score, int startpoint) {
+	int i,j,start, next, min, count=0;
+
+	short length;
+	int * isRemain = (int *)malloc(sizeof(int)*nOfCity);
+	for (i = 0; i<nOfCity; i++) isRemain[i] = 1;
+	srand(time(NULL));
+	*score = 0;
+	start = startpoint;
+	isRemain[start] = 0;
+	
+	for (i = 1; i < nOfCity; i++) {
+		for(j=i+2)
+
+
+
+	}
+	
+
+
+
+}
+
+
+
