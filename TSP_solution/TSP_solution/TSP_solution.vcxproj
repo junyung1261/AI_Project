@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="gg.c" />
     <ClCompile Include="greedy.c" />
     <ClCompile Include="소스.cpp" />
   </ItemGroup>
