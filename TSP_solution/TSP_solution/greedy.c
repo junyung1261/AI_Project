@@ -140,12 +140,16 @@ void two_Opt_Path(int nOfCity, unsigned short ** distance, int * path, int * sco
 	clock_t begin, end;
 
 	begin = clock();
-	
+	end = clock();
 
 
 	for (int k = 0; k < nOfCity;){
 		
 		start = rand() % nOfCity;
+
+
+
+
 
 		if (isRemain[start]){
 			isRemain[start] = 0;
@@ -155,6 +159,12 @@ void two_Opt_Path(int nOfCity, unsigned short ** distance, int * path, int * sco
 			next = 0;
 
 			while (1){
+				if ((double)(end - begin) / CLOCKS_PER_SEC > 30) {
+					printf("2-opt time = %f\n", (double)(end - begin) / CLOCKS_PER_SEC);
+					return;
+
+				}
+
 
 				max = 0;
 				int maxi = -1, maxj = -1;
@@ -183,7 +193,7 @@ void two_Opt_Path(int nOfCity, unsigned short ** distance, int * path, int * sco
 
 
 
-
+				end = clock();
 			}
 
 			if (*score > first_score) {
@@ -193,11 +203,11 @@ void two_Opt_Path(int nOfCity, unsigned short ** distance, int * path, int * sco
 
 			}
 			
-			end = clock();
+			
 		}
-
+		
 	}
-
+	printf("2-opt time = %f\n", (double)(end - begin) / CLOCKS_PER_SEC);
 		/*if (!(first_score > *score * 1.3)){
 
 			int k = 0;
