@@ -123,52 +123,34 @@ void getGreedyPath(int nOfCity, unsigned short ** distance, int * path, int * sc
 }
 
 void two_Opt_Path(int nOfCity, unsigned short ** distance, int * path, int * score, int startpoint) {
-	int i, j, start, next = 0, max, count = 0;
-	int first, second;
-
+	int i, j, start;
+	int test_score = 0;
 	int * test_path = (int *)malloc(sizeof(int)*nOfCity);
-	
-	int first_score = 0;
-
 	int * isRemain = (int *)malloc(sizeof(int)*nOfCity);
-	for (i = 0; i < nOfCity; i++) isRemain[i] = 1;
-
-	srand(time(NULL));
-
-	printf("%d---\n", *score);
-
 	clock_t begin, end;
 
+	for (i = 0; i < nOfCity; i++) isRemain[i] = 1;
+	srand(time(NULL));
+	
 	begin = clock();
 	end = clock();
 
 
 	for (int k = 0; k < nOfCity;){
-		
+
 		start = rand() % nOfCity;
-
-
-
-
 
 		if (isRemain[start]){
 			isRemain[start] = 0;
 			k++;
-			getGreedyPath(nOfCity, distance, test_path, &first_score, start);
-
-			next = 0;
+			getGreedyPath(nOfCity, distance, test_path, &test_score, start);
 
 			while (1){
-				if ((double)(end - begin) / CLOCKS_PER_SEC > 30) {
-					printf("2-opt time = %f\n", (double)(end - begin) / CLOCKS_PER_SEC);
-					return;
+				
+				
 
-				}
-
-
-				max = 0;
-				int maxi = -1, maxj = -1;
-				for (i = 0; i < nOfCity - 1; i++){
+				int max = 0, maxi = -1, maxj = -1;
+				for (i = 1; i < nOfCity - 1; i++){
 					for (j = i + 1; j < nOfCity - 1; j++){
 						int change =
 							distance[test_path[i]][test_path[i + 1]] + distance[test_path[j]][test_path[j + 1]]
@@ -184,98 +166,40 @@ void two_Opt_Path(int nOfCity, unsigned short ** distance, int * path, int * sco
 				}
 				if (maxi == -1) break;
 				pathSwap2(test_path, maxi, maxj);
-				int test_score = costCheck(test_path, distance, nOfCity);
-				if (first_score > test_score) first_score = test_score;
-
-
-
-
-
-
 
 				end = clock();
-			}
-
-			if (*score > first_score) {
-				*score = first_score;
-				memcpy(path, test_path, sizeof(int)*nOfCity);
-				printf("%d..%d\n", start, *score);
-
-			}
-			
-			
-		}
-		
-	}
-	printf("2-opt time = %f\n", (double)(end - begin) / CLOCKS_PER_SEC);
-		/*if (!(first_score > *score * 1.3)){
-
-			int k = 0;
-			int j = 0;
-			clock_t check = clock();
-			while (1){
-
-
-				if ((double)(end - begin) / CLOCKS_PER_SEC > 29.95) {
+				if ((double)(end - begin) / CLOCKS_PER_SEC > 29.99) {
 					printf("2-opt time = %f\n", (double)(end - begin) / CLOCKS_PER_SEC);
 					return;
-
 				}
-
-				first = rand() % nOfCity;
-				second = rand() % nOfCity;
-				while (first == second || first == start || second == start) {
-					first = rand() % nOfCity;
-					second = rand() % nOfCity;
-				}
-				opts[0] = MIN(first, second);
-				opts[1] = MAX(first, second);
-
-
-				pathSwap(test_path, first, second);
-
-				int test_score = costCheck(test_path, distance, nOfCity);
-
-				if (first_score > test_score){
-					first_score = test_score;
-					j = j / 2;
-				}
-				else pathSwap(test_path, first, second);
-
-				if (*score > first_score) {
-					*score = first_score;
-					memcpy(path, test_path, sizeof(int)*nOfCity);
-					printf("%d..\n", *score);
-				}
-				if ((double)(end - check) / CLOCKS_PER_SEC > 4.0)
-				{
-					break;
-				}
-				j++;
-				k++;
-				end = clock();
 			}
 
+			int test_score = costCheck(test_path, distance, nOfCity);
+			if (*score > test_score) {
+				*score = test_score;
+				memcpy(path, test_path, sizeof(int)*nOfCity);
+				printf("%d..%d\n", start, *score);
+			}
 		}
-*/
-	
+	}
 
-
+	end = clock();
+	printf("2-opt time = %f\n", (double)(end - begin) / CLOCKS_PER_SEC);
 
 }
 
 void pathSwap2(int *path, int first, int second){
 	int dec = 0;
-	
-	for (int i = first+1; i <= first+(second-first)/2; i++){
+
+	for (int i = first + 1; i <= first + (second - first) / 2; i++){
 
 		int temp = path[i];
-		path[i] = path[second - i + first+1];
+		path[i] = path[second - i + first + 1];
 		path[second - i + first + 1] = temp;
-		
-		
+
+
 	}
-	
+
 }
 
 void pathSwap(int *path, int first, int second){
@@ -292,7 +216,7 @@ int costCheck(int *path, unsigned short** distance, int nOfCity){
 	int total = 0;
 
 	for (int i = 0; i < nOfCity - 1; i++)
-		total += distance[path[i]][path[i+1]];
+		total += distance[path[i]][path[i + 1]];
 
 
 	return total;
