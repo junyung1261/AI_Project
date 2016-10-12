@@ -136,14 +136,14 @@ void two_Opt_Path(int nOfCity, unsigned short ** distance, int * path, int * sco
 	end = clock();
 
 
-	for (int k = 0; k < nOfCity;){
+	for (int k = 0; k < nOfCity; k++){
 
 		start = rand() % nOfCity;
 
 		if (isRemain[start]){
 			isRemain[start] = 0;
 			k++;
-			getGreedyPath(nOfCity, distance, test_path, &test_score, start);
+			getGreedyPath(nOfCity, distance, test_path, &test_score, k);
 
 			while (1){
 				
@@ -178,7 +178,7 @@ void two_Opt_Path(int nOfCity, unsigned short ** distance, int * path, int * sco
 			if (*score > test_score) {
 				*score = test_score;
 				memcpy(path, test_path, sizeof(int)*nOfCity);
-				printf("%d..%d\n", start, *score);
+				printf("%d..%d\n", k, *score);
 			}
 		}
 	}
